@@ -1,9 +1,10 @@
-package krzychek.qrpass;
+package krzychek.qrpass.plugins.keepass2android;
 
 import java.util.HashMap;
 
 import keepass2android.pluginsdk.KeepassDefs;
 import keepass2android.pluginsdk.PluginAccessException;
+import krzychek.qrpass.SendCreds;
 import android.content.Intent;
 
 public class ActionReceiver extends

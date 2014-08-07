@@ -15,8 +15,7 @@
         android:theme="@style/AppTheme" >
 
         <receiver
-            android:name="AccessReceiver"
-            android:exported="true" >
+            android:exported="true" android:name=".plugins.keepass2android.AccessReceiver">
             <intent-filter>
                 <action android:name="keepass2android.ACTION_TRIGGER_REQUEST_ACCESS" />
                 <action android:name="keepass2android.ACTION_RECEIVE_ACCESS" />

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package krzychek.qrpass;
+package krzychek.qrpass.plugins.keepass2android;
 
 import java.util.ArrayList;
 
