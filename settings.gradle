@@ -1,0 +1,2 @@
+include ':keepass2AndroidPluginSDK'
+include ':qRPass'

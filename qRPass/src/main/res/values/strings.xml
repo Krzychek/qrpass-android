@@ -7,5 +7,7 @@
     <string name="kp2aplugin_title">QRPass Plugin</string>
     <string name="kp2aplugin_shortdesc">Send credentials using QRPass</string>
     <string name="kp2aplugin_author">Krzysztof Bieroń</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
