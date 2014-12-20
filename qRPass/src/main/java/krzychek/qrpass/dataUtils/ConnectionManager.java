@@ -14,7 +14,7 @@ import java.util.List;
 
 public final class ConnectionManager {
 
-    private static final String URL = "http://10.0.2.2/qrpass/functions/android_app.php";
+    private static final String URL = "http://192.168.229.130/qrpass/functions/android_app.php";
 
 	private ConnectionManager() {}
 	

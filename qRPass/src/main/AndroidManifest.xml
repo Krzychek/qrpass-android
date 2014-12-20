@@ -28,7 +28,7 @@
         </receiver>
 
         <activity
-            android:name=".activities.TestActivity"
+            android:name=".activities.SendActivity"
             android:label="@string/title_activity_test" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.QRReadActivity" ></activity>
+        <activity android:name=".activities.SendByQRActivity" ></activity>
     </application>
 
 </manifest>
