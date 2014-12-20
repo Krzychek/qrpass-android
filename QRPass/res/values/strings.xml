@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">QRPass</string>
+    <string name="title_activity_send_creds">SendCreds</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="kp2aplugin_title">QRPass Plugin</string>
+    <string name="kp2aplugin_shortdesc">Send credentials using QRPass</string>
+    <string name="kp2aplugin_author">Krzysztof Bieroń</string>
+
+</resources>
