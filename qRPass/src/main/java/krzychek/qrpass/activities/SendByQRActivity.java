@@ -18,22 +18,6 @@ import krzychek.qrpass.activities.views.CameraSurfaceView;
 import krzychek.qrpass.dataUtils.EncryptUtil;
 import krzychek.qrpass.dataUtils.connectionServices.SendViaPost;
 
-/**
- * Created by krzysiek on 20.12.14.
- */
-/* TODO
-12-21 16:46:03.281  14179-14190/krzychek.qrpass W/MessageQueue﹕ Handler (android.os.Handler) {41a46578} sending message to a Handler on a dead thread
-    java.lang.RuntimeException: Handler (android.os.Handler) {41a46578} sending message to a Handler on a dead thread
-            at android.os.MessageQueue.enqueueMessage(MessageQueue.java:320)
-            at android.os.Handler.enqueueMessage(Handler.java:626)
-            at android.os.Handler.sendMessageAtTime(Handler.java:595)
-            at android.os.Handler.sendMessageDelayed(Handler.java:566)
-            at android.os.Handler.post(Handler.java:326)
-            at android.widget.Toast$TN.hide(Toast.java:370)
-            at android.app.ITransientNotification$Stub.onTransact(ITransientNotification.java:55)
-            at android.os.Binder.execTransact(Binder.java:404)
-            at dalvik.system.NativeStart.run(Native Method)
- */
 public class SendByQRActivity extends Activity {
     public static final String STR_DATA = "STR_DATA";
     private Camera camera;
@@ -131,6 +115,7 @@ public class SendByQRActivity extends Activity {
                                 startService(intent);
                                 // destroy activity
                                 finish();
+                                return;
                             }
                         }
                     }

@@ -17,16 +17,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <receiver
-            android:name="krzychek.qrpass.plugins.keepass2android.AccessReceiver"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="keepass2android.ACTION_TRIGGER_REQUEST_ACCESS" />
-                <action android:name="keepass2android.ACTION_RECEIVE_ACCESS" />
-                <action android:name="keepass2android.ACTION_REVOKE_ACCESS" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".activities.SendActivity"
             android:label="@string/title_activity_test" >
@@ -39,6 +29,26 @@
 
         <activity android:name=".activities.SendByQRActivity" />
         <service android:name=".dataUtils.connectionServices.SendViaPost" />
+
+
+        <!-- keepass2Android plugin-->
+        <receiver
+            android:name="krzychek.qrpass.plugins.keepass2android.AccessReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="keepass2android.ACTION_TRIGGER_REQUEST_ACCESS" />
+                <action android:name="keepass2android.ACTION_RECEIVE_ACCESS" />
+                <action android:name="keepass2android.ACTION_REVOKE_ACCESS" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".plugins.keepass2android.ActionReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="keepass2android.ACTION_OPEN_ENTRY" />
+                <action android:name="keepass2android.ACTION_ENTRY_ACTION_SELECTED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
