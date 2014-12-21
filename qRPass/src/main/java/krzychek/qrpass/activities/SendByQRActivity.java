@@ -15,11 +15,24 @@ import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
 
 import krzychek.qrpass.activities.views.CameraSurfaceView;
-import krzychek.qrpass.dataUtils.ConnectionManager;
 import krzychek.qrpass.dataUtils.EncryptUtil;
+import krzychek.qrpass.dataUtils.connectionServices.SendViaPost;
 
 /**
  * Created by krzysiek on 20.12.14.
+ */
+/* TODO
+12-21 16:46:03.281  14179-14190/krzychek.qrpass W/MessageQueue﹕ Handler (android.os.Handler) {41a46578} sending message to a Handler on a dead thread
+    java.lang.RuntimeException: Handler (android.os.Handler) {41a46578} sending message to a Handler on a dead thread
+            at android.os.MessageQueue.enqueueMessage(MessageQueue.java:320)
+            at android.os.Handler.enqueueMessage(Handler.java:626)
+            at android.os.Handler.sendMessageAtTime(Handler.java:595)
+            at android.os.Handler.sendMessageDelayed(Handler.java:566)
+            at android.os.Handler.post(Handler.java:326)
+            at android.widget.Toast$TN.hide(Toast.java:370)
+            at android.app.ITransientNotification$Stub.onTransact(ITransientNotification.java:55)
+            at android.os.Binder.execTransact(Binder.java:404)
+            at dalvik.system.NativeStart.run(Native Method)
  */
 public class SendByQRActivity extends Activity {
     public static final String STR_DATA = "STR_DATA";
@@ -27,6 +40,7 @@ public class SendByQRActivity extends Activity {
     private ImageScanner scanner;
     private CameraSurfaceView cameraSurface;
     private Handler handler;
+    private boolean processing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +67,12 @@ public class SendByQRActivity extends Activity {
         scanner = new ImageScanner();
 
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();
         releaseCamera();
+        handler.removeCallbacks(doFocus);
     }
 
     private void releaseCamera() {
@@ -71,8 +86,8 @@ public class SendByQRActivity extends Activity {
     Runnable doFocus = new Runnable() {
         @Override
         public void run() {
-            handler.removeCallbacks(this);
-            camera.autoFocus(autoFocusCB);
+            if(!isFinishing())
+                camera.autoFocus(autoFocusCB);
         }
     };
 
@@ -87,29 +102,39 @@ public class SendByQRActivity extends Activity {
         return new Camera.PreviewCallback() {
             @Override
             public void onPreviewFrame(byte[] imageData, Camera camera) {
-                Camera.Parameters parameters = camera.getParameters();
-                Camera.Size size = parameters.getPreviewSize();
+                if(!processing) {
+                    processing = true;
+                    Camera.Parameters parameters = camera.getParameters();
+                    Camera.Size size = parameters.getPreviewSize();
 
-                Image image = new Image(size.width, size.height, "Y800");
-                image.setData(imageData);
+                    Image image = new Image(size.width, size.height, "Y800");
+                    image.setData(imageData);
 
-                if(scanner.scanImage(image) != 0) {
-
-                    SymbolSet symbolSet = scanner.getResults();
-                    for (Symbol sym : symbolSet) {
-                        String[] qrData = sym.getData().split("\n",5);
-                        if (qrData.length == 4) {
-                            String id = qrData[0];
-                            String salt = qrData[1];
-                            String iv = qrData[2];
-                            String passPhrase = qrData[3];
-
-                            Intent intent = getIntent();
-                            String data = intent.getStringExtra(STR_DATA);
-                            EncryptUtil encryptUtil = new EncryptUtil(passPhrase,salt,iv);
-                            ConnectionManager.sendViaPost(id,encryptUtil.encrypt(data));
+                    if (scanner.scanImage(image) != 0) {
+                        SymbolSet symbolSet = scanner.getResults();
+                        for (Symbol sym : symbolSet) {
+                            String[] qrData = sym.getData().split("\n", 5);
+                            if (qrData.length == 4) {
+                                // get data from QRCode
+                                String id = qrData[0];
+                                String salt = qrData[1];
+                                String iv = qrData[2];
+                                String passPhrase = qrData[3];
+                                // encrypt input data
+                                String inData = getIntent().getStringExtra(STR_DATA);
+                                EncryptUtil encryptUtil = new EncryptUtil(passPhrase, salt, iv);
+                                String outData = encryptUtil.encrypt(inData);
+                                // start service
+                                Intent intent = new Intent(getApplicationContext(), SendViaPost.class);
+                                intent.putExtra(SendViaPost.ID, id);
+                                intent.putExtra(SendViaPost.DATA, outData);
+                                startService(intent);
+                                // destroy activity
+                                finish();
+                            }
                         }
                     }
+                    processing = false;
                 }
             }
         };

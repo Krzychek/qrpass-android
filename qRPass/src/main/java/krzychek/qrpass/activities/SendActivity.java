@@ -32,6 +32,7 @@ public class SendActivity extends Activity {
         intent.putExtra(SendByQRActivity.STR_DATA, jsonBuilder.getJSONString());
 
         startActivity(intent);
+        finish();
     }
 
     @Override

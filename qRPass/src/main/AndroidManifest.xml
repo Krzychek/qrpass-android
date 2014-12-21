@@ -37,7 +37,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.SendByQRActivity" ></activity>
+        <activity android:name=".activities.SendByQRActivity" />
+        <service android:name=".dataUtils.connectionServices.SendViaPost" />
     </application>
 
 </manifest>
