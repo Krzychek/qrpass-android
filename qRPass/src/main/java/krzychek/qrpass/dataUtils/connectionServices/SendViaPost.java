@@ -2,6 +2,8 @@ package krzychek.qrpass.dataUtils.connectionServices;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -29,11 +31,21 @@ public class SendViaPost extends IntentService {
         super("SendViaPost");
     }
 
+    public void showToast(final String text, final int toastLenght) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), text, toastLenght).show();
+            }
+        });
+    }
+
+    ;
+
     @Override
     protected void onHandleIntent(Intent intent) {
         String id = intent.getStringExtra(ID);
         String data = intent.getStringExtra(DATA);
-
         try {
             ConnectionSemaphore.getInstance().acquire();
             // set up connection
@@ -48,9 +60,9 @@ public class SendViaPost extends IntentService {
             // execute POST
             HttpClient client = new DefaultHttpClient();
             client.execute(post);
-            Toast.makeText(this, "Data send successfully", Toast.LENGTH_SHORT).show();
+            showToast("Data send successfully", Toast.LENGTH_SHORT);
         } catch (Exception e) {
-            Toast.makeText(this, "Sending data failed", Toast.LENGTH_SHORT).show();
+            showToast("Sending data failed", Toast.LENGTH_SHORT);
             e.printStackTrace();
         } finally {
             ConnectionSemaphore.getInstance().release();
