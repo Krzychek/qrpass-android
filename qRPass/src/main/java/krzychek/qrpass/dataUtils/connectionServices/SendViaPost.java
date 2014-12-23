@@ -16,13 +16,14 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
+import krzychek.qrpass.R;
+
 /**
  * Created by krzysiek on 21.12.14.
  */
 public class SendViaPost extends IntentService {
-    private static final String URL = "http://192.168.229.130/qrpass/functions/android_app.php";
-    final public static String DATA = "data";
-    final public static String ID = "id";
+    static final public String DATA = "data";
+    static final public String ID = "id";
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -44,12 +45,15 @@ public class SendViaPost extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        String url = "http://"
+                + getResources().getString(R.string.serverURL)
+                + "/functions/android_app.php";
         String id = intent.getStringExtra(ID);
         String data = intent.getStringExtra(DATA);
         try {
             ConnectionSemaphore.getInstance().acquire();
             // set up connection
-            HttpPost post = new HttpPost(URL);
+            HttpPost post = new HttpPost(url);
             post.setHeader("User-Agent", "Android_QRPass");
             post.setHeader("Accept","*/*");
             // set post data

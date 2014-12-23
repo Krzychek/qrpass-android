@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 
 import net.sourceforge.zbar.Image;
 import net.sourceforge.zbar.ImageScanner;
 import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
 
+import krzychek.qrpass.R;
 import krzychek.qrpass.activities.views.CameraSurfaceView;
 import krzychek.qrpass.dataUtils.EncryptUtil;
 import krzychek.qrpass.dataUtils.connectionServices.SendViaPost;
@@ -24,31 +26,34 @@ public class SendByQRActivity extends Activity {
     private ImageScanner scanner;
     private CameraSurfaceView cameraSurface;
     private Handler handler;
-    private boolean processing = false;
+    private boolean processing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set up basic activity spec
+        // set up basic activity spec
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        setContentView(R.layout.qr_scan_activity);
+        processing = false;
+        // initialize scanner
+        scanner = new ImageScanner();
+        // initialize camera and preview
         camera = Camera.open();
         cameraSurface = new CameraSurfaceView(this, camera);
-        setContentView(cameraSurface);
-
+        FrameLayout cameraPreview = (FrameLayout) findViewById(R.id.CameraPreview);
+        cameraPreview.addView(cameraSurface);
+        // set camera callback for scanning
         camera.setPreviewCallback(getPreviewCb());
         camera.startPreview();
         camera.autoFocus(autoFocusCB);
-
+        // start auto-focus handler
         handler = new Handler();
         cameraSurface.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 camera.autoFocus(autoFocusCB);
             }
         });
-
-        scanner = new ImageScanner();
 
     }
 
