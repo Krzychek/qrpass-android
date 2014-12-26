@@ -18,16 +18,10 @@ import java.util.List;
 
 import krzychek.qrpass.R;
 
-/**
- * Created by krzysiek on 21.12.14.
- */
 public class SendViaPost extends IntentService {
     static final public String DATA = "data";
     static final public String ID = "id";
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     */
     public SendViaPost() {
         super("SendViaPost");
     }
@@ -40,8 +34,6 @@ public class SendViaPost extends IntentService {
             }
         });
     }
-
-    ;
 
     @Override
     protected void onHandleIntent(Intent intent) {

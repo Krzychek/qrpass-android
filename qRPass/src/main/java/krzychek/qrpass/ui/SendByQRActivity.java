@@ -123,7 +123,7 @@ public class SendByQRActivity extends Activity implements Camera.PreviewCallback
         }
     }
 
-    // Auto focus
+    // Auto focus related
     private Runnable doFocus = new Runnable() {
         @Override
         public void run() {

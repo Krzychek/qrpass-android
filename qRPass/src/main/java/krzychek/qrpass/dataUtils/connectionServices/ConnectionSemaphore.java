@@ -2,9 +2,6 @@ package krzychek.qrpass.dataUtils.connectionServices;
 
 import java.util.concurrent.Semaphore;
 
-/**
- * Created by krzysiek on 21.12.14.
- */
 public class ConnectionSemaphore {
     private static final int MAX_AVAILABLE = 10;
     private static ConnectionSemaphore instance;
