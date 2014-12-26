@@ -27,7 +27,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.SendByQRActivity" />
+        <activity android:name=".ui.SendByQRActivity"
+            android:theme="@android:style/Theme.Dialog" />
         <service android:name=".dataUtils.connectionServices.SendViaPost" />
 
 

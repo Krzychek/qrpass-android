@@ -12,9 +12,6 @@ import java.util.Map;
 import krzychek.qrpass.R;
 import krzychek.qrpass.dataUtils.JSONStringBuilder;
 
-/**
- * Created by krzysiek on 20.12.14.
- */
 public class SendActivity extends Activity {
 
     public void sendTest(View view) {
@@ -24,7 +21,7 @@ public class SendActivity extends Activity {
         // build json
         JSONStringBuilder jsonBuilder = new JSONStringBuilder();
         Map<String, String> entryMap = new HashMap<>();
-        entryMap.put("login", login.getText().toString());
+        entryMap.put("userName", login.getText().toString());
         entryMap.put("password", pass.getText().toString());
         jsonBuilder.addPassEntry(entryMap);
         // start qr sender
