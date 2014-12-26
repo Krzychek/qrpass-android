@@ -1,4 +1,4 @@
-package krzychek.qrpass.activities;
+package krzychek.qrpass.ui;
 
 import android.app.Activity;
 import android.content.Intent;

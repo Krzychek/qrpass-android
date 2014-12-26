@@ -1,4 +1,4 @@
-package krzychek.qrpass.activities.views;
+package krzychek.qrpass.ui.views;
 
 import android.content.Context;
 import android.hardware.Camera;

@@ -1,4 +1,4 @@
-package krzychek.qrpass.activities;
+package krzychek.qrpass.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,9 +16,9 @@ import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
 
 import krzychek.qrpass.R;
-import krzychek.qrpass.activities.views.CameraSurfaceView;
 import krzychek.qrpass.dataUtils.EncryptUtil;
 import krzychek.qrpass.dataUtils.connectionServices.SendViaPost;
+import krzychek.qrpass.ui.views.CameraSurfaceView;
 
 public class SendByQRActivity extends Activity {
     public static final String STR_DATA = "STR_DATA";

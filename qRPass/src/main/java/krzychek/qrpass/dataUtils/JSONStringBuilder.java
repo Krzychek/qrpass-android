@@ -1,15 +1,17 @@
 package krzychek.qrpass.dataUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
 
 final public class JSONStringBuilder {
-    JSONArray jsonCredentials = new JSONArray();
+    static private final String CREDENTIALS = "credentials";
+    JSONObject jsonCredentials;
 
-	public JSONStringBuilder() {};
+	public JSONStringBuilder() {
+        jsonCredentials = new JSONObject();
+    };
 
     public void addPassEntry(Map<String,String> entry) {
         JSONObject json = new JSONObject();
@@ -17,19 +19,14 @@ final public class JSONStringBuilder {
             for (Map.Entry<String, String> row: entry.entrySet()) {
                 json.put(row.getKey(),row.getValue());
             }
+            jsonCredentials.put(CREDENTIALS, json);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        jsonCredentials.put(json);
     }
 
     public String getJSONString() {
-		JSONObject json = new JSONObject();
-        try {
-            json.put("credentials", jsonCredentials);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json.toString();
+        return jsonCredentials.toString();
 	}
 }

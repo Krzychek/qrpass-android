@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import keepass2android.pluginsdk.PluginAccessException;
-import krzychek.qrpass.activities.SendByQRActivity;
 import krzychek.qrpass.dataUtils.JSONStringBuilder;
+import krzychek.qrpass.ui.SendByQRActivity;
 
 public class ActionReceiver extends
 		keepass2android.pluginsdk.PluginActionBroadcastReceiver {
