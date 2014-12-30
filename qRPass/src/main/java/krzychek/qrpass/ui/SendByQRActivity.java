@@ -39,19 +39,9 @@ public class SendByQRActivity extends Activity implements Camera.PreviewCallback
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.qr_scan_activity);
         scanner = new ImageScanner();
-        cameraInitialize();
-        camera.setPreviewCallback(this);
-
+        startCamera();
         // start auto-focus handler
         handler = new Handler();
-    }
-
-    private void cameraInitialize() {
-        camera = Camera.open();
-        camera.setDisplayOrientation(90);
-        cameraSurface = (SurfaceView) findViewById(R.id.CameraPreview);
-        SurfaceHolder previewHolder = cameraSurface.getHolder();
-        previewHolder.addCallback(this);
     }
 
     @Override
@@ -61,25 +51,12 @@ public class SendByQRActivity extends Activity implements Camera.PreviewCallback
         handler.removeCallbacks(doFocus);
     }
 
-    private void releaseCamera() {
-        if (camera != null) {
-            camera.setPreviewCallback(null);
-            camera.release();
-            camera = null;
-        }
-    }
-
-    private void startPreview() {
-        if (!previewing) {
-            previewing = true;
-            // Set preview surface size
-            Camera.Size size = camera.getParameters().getPreviewSize();
-            double ratio = size.width/(double) size.height;
-            ViewGroup.LayoutParams layoutParams = cameraSurface.getLayoutParams();
-            layoutParams.height = (int) (cameraSurface.getWidth() * ratio);
-            cameraSurface.setLayoutParams(layoutParams);
-            camera.startPreview();
-            camera.autoFocus(this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startCamera();
+        if (cameraSurface.isShown()) {
+            startPreview();
         }
     }
 
@@ -139,21 +116,52 @@ public class SendByQRActivity extends Activity implements Camera.PreviewCallback
     // Surface holder methods
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        try {
-            camera.setPreviewDisplay(cameraSurface.getHolder());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         startPreview();
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void surfaceDestroyed(SurfaceHolder holder) {}
 
+    private void releaseCamera() {
+        if (camera != null) {
+            camera.stopPreview();
+            camera.setPreviewCallback(null);
+            camera.release();
+            camera = null;
+            previewing = false;
+        }
+    }
+
+    private void startCamera() {
+        if (camera == null) {
+            camera = Camera.open();
+            camera.setDisplayOrientation(90);
+            cameraSurface = (SurfaceView) findViewById(R.id.CameraPreview);
+            SurfaceHolder previewHolder = cameraSurface.getHolder();
+            previewHolder.addCallback(this);
+            camera.setPreviewCallback(this);
+        }
+    }
+
+    private void startPreview() {
+        if (!previewing) {
+            previewing = true;
+            try {
+                camera.setPreviewDisplay(cameraSurface.getHolder());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Set preview surface size
+            Camera.Size size = camera.getParameters().getPreviewSize();
+            double ratio = size.width/(double) size.height;
+            ViewGroup.LayoutParams layoutParams = cameraSurface.getLayoutParams();
+            layoutParams.height = (int) (cameraSurface.getWidth() * ratio);
+            cameraSurface.setLayoutParams(layoutParams);
+            camera.startPreview();
+            camera.autoFocus(this);
+        }
     }
 }
