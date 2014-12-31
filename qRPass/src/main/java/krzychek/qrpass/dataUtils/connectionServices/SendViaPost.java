@@ -9,7 +9,7 @@ import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -37,25 +37,23 @@ public class SendViaPost extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        String url = "http://"
-                + getResources().getString(R.string.serverURL)
-                + "/functions/android_app.php";
+        String url = String.format("http://%s/pipe",
+                getResources().getString(R.string.serverURL));
         String id = intent.getStringExtra(ID);
         String data = intent.getStringExtra(DATA);
         try {
             ConnectionSemaphore.getInstance().acquire();
             // set up connection
-            HttpPost post = new HttpPost(url);
-            post.setHeader("User-Agent", "Android_QRPass");
-            post.setHeader("Accept","*/*");
-            // set post data
+            HttpPut httpPut = new HttpPut(url);
+            httpPut.setHeader("User-Agent", "Android_QRPass");
+            // set request body
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("qrpass_id", id));
             params.add(new BasicNameValuePair("qrpass_data", data));
-            post.setEntity(new UrlEncodedFormEntity(params));
-            // execute POST
+            httpPut.setEntity(new UrlEncodedFormEntity(params));
+            // execute request
             HttpClient client = new DefaultHttpClient();
-            client.execute(post);
+            client.execute(httpPut);
             showToast("Data send successfully", Toast.LENGTH_SHORT);
         } catch (Exception e) {
             showToast("Sending data failed", Toast.LENGTH_SHORT);
