@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import krzychek.qrpass.R;
 import krzychek.qrpass.dataUtils.EncryptUtil;
-import krzychek.qrpass.dataUtils.connectionServices.SendViaPost;
+import krzychek.qrpass.dataUtils.connectionServices.SendDataService;
 
 public class SendByQRActivity extends Activity implements Camera.PreviewCallback, Camera.AutoFocusCallback, SurfaceHolder.Callback {
     public static final String STR_DATA = "STR_DATA";
@@ -86,9 +86,9 @@ public class SendByQRActivity extends Activity implements Camera.PreviewCallback
                         EncryptUtil encryptUtil = new EncryptUtil(passPhrase, salt, iv);
                         String outData = encryptUtil.encrypt(inData);
                         // start service
-                        Intent intent = new Intent(getApplicationContext(), SendViaPost.class);
-                        intent.putExtra(SendViaPost.ID, id);
-                        intent.putExtra(SendViaPost.DATA, outData);
+                        Intent intent = new Intent(getApplicationContext(), SendDataService.class);
+                        intent.putExtra(SendDataService.ID, id);
+                        intent.putExtra(SendDataService.DATA, outData);
                         startService(intent);
                         // destroy activity
                         finish();

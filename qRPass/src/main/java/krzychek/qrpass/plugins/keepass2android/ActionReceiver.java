@@ -32,7 +32,7 @@ public class ActionReceiver extends
         // build json
         JSONStringBuilder jsonBuilder = new JSONStringBuilder();
         Map<String, String> entryMap = new HashMap<>();
-        entryMap.put("login", login);
+        entryMap.put("userName", login);
         entryMap.put("password", password);
         jsonBuilder.addPassEntry(entryMap);
         // start qr sender

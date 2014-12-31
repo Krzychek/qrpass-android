@@ -18,11 +18,11 @@ import java.util.List;
 
 import krzychek.qrpass.R;
 
-public class SendViaPost extends IntentService {
+public class SendDataService extends IntentService {
     static final public String DATA = "data";
     static final public String ID = "id";
 
-    public SendViaPost() {
+    public SendDataService() {
         super("SendViaPost");
     }
 
