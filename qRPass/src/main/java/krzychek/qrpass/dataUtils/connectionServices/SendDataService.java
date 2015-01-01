@@ -37,15 +37,13 @@ public class SendDataService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        String url = String.format("http://%s/pipe",
+        String url = String.format("https://%s/pipe",
                 getResources().getString(R.string.serverURL));
         String id = intent.getStringExtra(ID);
         String data = intent.getStringExtra(DATA);
         try {
-            ConnectionSemaphore.getInstance().acquire();
             // set up connection
             HttpPut httpPut = new HttpPut(url);
-            httpPut.setHeader("User-Agent", "Android_QRPass");
             // set request body
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("qrpass_id", id));
@@ -58,8 +56,6 @@ public class SendDataService extends IntentService {
         } catch (Exception e) {
             showToast("Sending data failed", Toast.LENGTH_SHORT);
             e.printStackTrace();
-        } finally {
-            ConnectionSemaphore.getInstance().release();
         }
     }
 }
