@@ -23,7 +23,7 @@ import krzychek.qrpass.dataUtils.EncryptUtil;
 import krzychek.qrpass.dataUtils.connectionServices.SendDataService;
 
 public class SendByQRActivity extends Activity implements Camera.PreviewCallback, Camera.AutoFocusCallback, SurfaceHolder.Callback {
-    public static final String STR_DATA = "STR_DATA";
+    public static final String DATA_TO_SEND = "DATA_TO_SEND";
     private Camera camera;
     private ImageScanner scanner;
     private Handler handler;
@@ -74,16 +74,14 @@ public class SendByQRActivity extends Activity implements Camera.PreviewCallback
             if (scanner.scanImage(image) != 0) {
                 SymbolSet symbolSet = scanner.getResults();
                 for (Symbol sym : symbolSet) {
-                    String[] qrData = sym.getData().split("\n", 5);
-                    if (qrData.length == 4) {
+                    String[] qrData = sym.getData().split("\n");
+                    if (qrData.length == 2) {
                         // get data from QRCode
                         String id = qrData[0];
-                        String salt = qrData[1];
-                        String iv = qrData[2];
-                        String passPhrase = qrData[3];
+                        String key = qrData[1];
                         // encrypt input data
-                        String inData = getIntent().getStringExtra(STR_DATA);
-                        EncryptUtil encryptUtil = new EncryptUtil(passPhrase, salt, iv);
+                        String inData = getIntent().getStringExtra(DATA_TO_SEND);
+                        EncryptUtil encryptUtil = new EncryptUtil(key);
                         String outData = encryptUtil.encrypt(inData);
                         // start service
                         Intent intent = new Intent(getApplicationContext(), SendDataService.class);

@@ -26,7 +26,7 @@ public class SendActivity extends Activity {
         jsonBuilder.addPassEntry(entryMap);
         // start qr sender
         Intent intent = new Intent(this, SendByQRActivity.class);
-        intent.putExtra(SendByQRActivity.STR_DATA, jsonBuilder.getJSONString());
+        intent.putExtra(SendByQRActivity.DATA_TO_SEND, jsonBuilder.getJSONString());
 
         startActivity(intent);
         finish();

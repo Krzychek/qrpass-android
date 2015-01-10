@@ -26,11 +26,11 @@ public class SendDataService extends IntentService {
         super("SendViaPost");
     }
 
-    public void showToast(final String text, final int toastLenght) {
+    public void showToast(final String text, final int toastLength) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), text, toastLenght).show();
+                Toast.makeText(getApplicationContext(), text, toastLength).show();
             }
         });
     }

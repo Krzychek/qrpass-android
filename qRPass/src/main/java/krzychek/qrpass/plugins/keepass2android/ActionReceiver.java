@@ -39,7 +39,7 @@ public class ActionReceiver extends
         Context context = selectedAction.getContext();
         Intent intent = new Intent(context, SendByQRActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(SendByQRActivity.STR_DATA, jsonBuilder.getJSONString());
+        intent.putExtra(SendByQRActivity.DATA_TO_SEND, jsonBuilder.getJSONString());
 
         context.startActivity(intent);
 
