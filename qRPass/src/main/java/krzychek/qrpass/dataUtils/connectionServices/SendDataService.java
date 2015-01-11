@@ -38,19 +38,23 @@ public class SendDataService extends IntentService {
 
         HttpURLConnection urlConnection = null;
         try {
-            String body = "qrpass_id=" + URLEncoder.encode(id, "UTF-8")
-                    + "&qrpass_data=" + URLEncoder.encode(data, "UTF-8");
+            // start connection
             URL url = new URL(String.format("https://%s/pipe",
                     getResources().getString(R.string.serverURL)));
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("PUT");
             DataOutputStream out = new DataOutputStream(urlConnection.getOutputStream());
+            // send body
+            String body = "qrpass_id=" + URLEncoder.encode(id, "UTF-8")
+                    + "&qrpass_data=" + URLEncoder.encode(data, "UTF-8");
             out.writeBytes(body);
+            // process response
             int rCode = urlConnection.getResponseCode();
-            if (rCode == 200) {
-                showToast("Data send successfully", Toast.LENGTH_SHORT);
-            } else {
-                throw new IOException("Expecting response code 200, got: " + rCode);
+            switch (rCode) {
+                case 200: case 204:
+                    showToast("Data send successfully", Toast.LENGTH_SHORT); break;
+                default:
+                    throw new IOException("Wrong response code: " + rCode);
             }
         } catch (IOException e) {
             showToast("Sending data failed", Toast.LENGTH_SHORT);
